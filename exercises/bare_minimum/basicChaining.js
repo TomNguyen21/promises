@@ -14,6 +14,39 @@ var Promise = require('bluebird');
 
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
+  var readFile = (readFilePath) => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(readFilePath, 'utf8', (err, data) => {
+        if (err) {
+          // console.log('readFile error')
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+  var writeFile = (writeFilePath) => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(writeFilePath, (err, data) => {
+        if (err) {
+          console.log('writefile error');
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+
+  var errorHandler = (err) => {
+    if (err) {
+      throw new Error(err);
+    }
+  };
+  readFile(readFilePath)
+    .then(writeFile)
+    .catch(errorHandler);
   // TODO
 };
 
